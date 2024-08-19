@@ -1,7 +1,7 @@
-// TODO: Include packages needed for this application
-import inquirer from'inquirer';
+import inquirer from 'inquirer';
 import fs from 'fs';
-// TODO: Create an array of questions for user input
+
+// Array of questions for user input
 const questions = [
   {
     type: 'input',
@@ -50,13 +50,61 @@ const questions = [
     message: 'Enter your email address:',
   },
 ];
-inquirer.prompt(questions).then((answers) => {
-});
-// TODO: Create a function to write README file
 
+// Function to generate markdown content
+function generateMarkdown(data) {
+  return `
+# ${data.title}
 
-// TODO: Create a function to initialize app
-function init() {}
+## Description
+${data.description}
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [License](#license)
+- [Questions](#questions)
+
+## Installation
+${data.installation}
+
+## Usage
+${data.usage}
+
+## Contributing
+${data.contributing}
+
+## Tests
+${data.tests}
+
+## License
+This project is licensed under the ${data.license} license.
+
+## Questions
+If you have any questions about the repo, open an issue or contact me directly at [${data.email}](mailto:${data.email}). You can find more of my work at [${data.github}](https://github.com/${data.github}).
+`;
+}
+
+// Function to write README file
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) => {
+    if (err) {
+      console.error('Error writing to file:', err);
+    } else {
+      console.log('README.md has been generated successfully.');
+    }
+  });
+}
+
+// Function to initialize app
+function init() {
+  inquirer.prompt(questions).then((answers) => {
+    const readmeContent = generateMarkdown(answers);
+    writeToFile('README.md', readmeContent);
+  });
+}
 
 // Function call to initialize app
 init();
